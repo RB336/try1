@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>היא אמרה כן | SHE SAID YES - הפקות הצעות נישואין</title>
+    <meta name="description" content="הפקות הצעות נישואין בהתאמה אישית - הרגע שתזכרו לכל החיים">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ========================================
+           CSS Variables & Base Styles
+           ======================================== */
+        :root {
+            --bg-cream: #FDFBF7;
+            --bg-blush: #FDF8F6;
+            --text-dark: #4A4A4A;
+            --text-light: #7A7A7A;
+            --gold: #D4AF37;
+            --gold-light: #E8D48A;
+            --dusty-rose: #E6C2BF;
+            --dusty-rose-light: #F5E1DF;
+            --white: #FFFFFF;
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(212, 175, 55, 0.3);
+
+            --font-hebrew: 'Assistant', sans-serif;
+            --font-english: 'Playfair Display', serif;
+
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-hebrew);
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+            direction: rtl;
+        }
+
+        /* ========================================
+           Utility Classes
+           ======================================== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        @media (max-width: 768px) {
+            .section-padding {
+                padding: 80px 0;
+            }
+        }
+
+        /* ========================================
+           Typography
+           ======================================== */
+        h1, h2, h3, h4 {
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .headline-english {
+            font-family: var(--font-english);
+            font-style: italic;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-light);
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        /* ========================================
+           Floating Particles
+           ======================================== */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float-particle 15s infinite ease-in-out;
+        }
+
+        .particle.petal {
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(ellipse, var(--dusty-rose) 0%, transparent 70%);
+            animation: float-petal 20s infinite ease-in-out;
+        }
+
+        @keyframes float-particle {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float-petal {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translateY(50vh) translateX(50px) rotate(180deg) scale(1.2);
+            }
+            100% {
+                transform: translateY(-100px) translateX(-50px) rotate(360deg) scale(0.8);
+            }
+        }
+
+        /* ========================================
+           Navigation
+           ======================================== */
+        .nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.4s var(--transition-smooth);
+        }
+
+        .nav.scrolled {
+            background: rgba(253, 251, 247, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 2px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .logo-hebrew {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            letter-spacing: 1px;
+        }
+
+        .logo-english {
+            font-family: var(--font-english);
+            font-size: 0.75rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            font-weight: 400;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+        }
+
+        /* ========================================
+           Hero Section
+           ======================================== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .hero-bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7) saturate(1.1);
+            transform: scale(1);
+            animation: slow-zoom 30s ease-in-out infinite alternate;
+        }
+
+        @keyframes slow-zoom {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                180deg,
+                rgba(253, 251, 247, 0.1) 0%,
+                rgba(253, 251, 247, 0.3) 50%,
+                rgba(253, 251, 247, 0.95) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 24px;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .hero-title .highlight {
+            font-family: var(--font-english);
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--text-light);
+            font-weight: 300;
+            margin-bottom: 50px;
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .hero-cta {
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        /* ========================================
+           Buttons
+           ======================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 40px;
+            font-family: var(--font-hebrew);
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s var(--transition-smooth);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: var(--white);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-dark);
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: var(--gold);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+        }
+
+        .btn-outline:hover {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        /* ========================================
+           Scroll Indicator
+           ======================================== */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fade-in 1s ease 2s forwards;
+        }
+
+        @keyframes fade-in {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .scroll-indicator span {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            letter-spacing: 2px;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scroll-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scroll-pulse {
+            0%, 100% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scaleY(0.5);
+                opacity: 0.5;
+            }
+        }
+
+        /* ========================================
+           About / Intro Section
+           ======================================== */
+        .intro-section {
+            background: var(--bg-cream);
+            position: relative;
+        }
+
+        .intro-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        @media (max-width: 968px) {
+            .intro-content {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+        }
+
+        .intro-text {
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .intro-text h2 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .intro-text h2 .english {
+            display: block;
+            font-family: var(--font-english);
+            font-style: italic;
+            font-size: 0.5em;
+            color: var(--gold);
+            margin-top: 10px;
+        }
+
+        .intro-text p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.9;
+        }
+
+        .intro-image {
+            position: relative;
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .intro-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 200px 200px 20px 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .intro-image::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--gold);
+            border-radius: 200px 200px 20px 20px;
+            z-index: -1;
+        }
+
+        .intro-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: var(--font-english);
+            font-size: 2.5rem;
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* ========================================
+           Experience / Steps Section
+           ======================================== */
+        .experience-section {
+            background: linear-gradient(180deg, var(--bg-cream) 0%, var(--bg-blush) 100%);
+            position: relative;
+        }
+
+        .experience-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 100px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .section-header .english-title {
+            font-family: var(--font-english);
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        @media (max-width: 968px) {
+            .steps-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        .step-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            filter: blur(10px);
+            transition: all 0.4s var(--transition-smooth);
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(212, 175, 55, 0.15);
+            border-color: var(--gold);
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .step-card:hover::before {
+            opacity: 1;
+        }
+
+        .step-number {
+            font-family: var(--font-english);
+            font-size: 4rem;
+            color: var(--dusty-rose-light);
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .step-icon svg {
+            width: 36px;
+            height: 36px;
+            fill: var(--white);
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .step-desc {
+            color: var(--text-light);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* ========================================
+           Locations Section
+           ======================================== */
+        .locations-section {
+            background: var(--bg-blush);
+            overflow: hidden;
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        @media (max-width: 968px) {
+            .locations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .location-card {
+            position: relative;
+            height: 500px;
+            border-radius: 30px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .location-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .location-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--transition-smooth);
+        }
+
+        .location-card:hover .location-image {
+            transform: scale(1.1);
+        }
+
+        .location-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(0, 0, 0, 0.2) 50%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            transition: background 0.4s ease;
+        }
+
+        .location-card:hover .location-overlay {
+            background: linear-gradient(
+                0deg,
+                rgba(212, 175, 55, 0.8) 0%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0) 100%
+            );
+        }
+
+        .location-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px;
+            color: var(--white);
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .location-card:hover .location-content {
+            transform: translateY(0);
+        }
+
+        .location-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .location-title {
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .location-desc {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .location-arrow {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s ease;
+        }
+
+        .location-card:hover .location-arrow {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .location-arrow svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--white);
+            transform: rotate(180deg);
+        }
+
+        /* ========================================
+           Gallery / Real Stories Section
+           ======================================== */
+        .gallery-section {
+            background: var(--bg-cream);
+            padding: 120px 0;
+            overflow: hidden;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .gallery-strip {
+            display: flex;
+            gap: 30px;
+            padding: 20px 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            cursor: grab;
+        }
+
+        .gallery-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gallery-strip.dragging {
+            cursor: grabbing;
+        }
+
+        .gallery-item {
+            flex: 0 0 auto;
+            width: 350px;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-item {
+                width: 280px;
+            }
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+            color: var(--white);
+        }
+
+        .gallery-couple-name {
+            font-family: var(--font-english);
+            font-style: italic;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .gallery-location {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* ========================================
+           Testimonials Section
+           ======================================== */
+        .testimonials-section {
+            background: linear-gradient(135deg, var(--bg-blush) 0%, var(--bg-cream) 100%);
+            position: relative;
+        }
+
+        .testimonials-section::before {
+            content: '"';
+            position: absolute;
+            top: 50px;
+            right: 10%;
+            font-family: var(--font-english);
+            font-size: 20rem;
+            color: var(--dusty-rose-light);
+            opacity: 0.3;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .testimonials-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 60px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
+            position: relative;
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .testimonial-card {
+                padding: 40px 30px;
+            }
+        }
+
+        .testimonial-quote {
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            line-height: 1.9;
+            color: var(--text-dark);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .testimonial-quote strong {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .testimonial-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--gold);
+        }
+
+        .testimonial-info h4 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .testimonial-info span {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .testimonial-rating {
+            margin-top: 5px;
+            color: var(--gold);
+            letter-spacing: 3px;
+        }
+
+        .testimonials-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .testimonials-nav button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .testimonials-nav button:hover {
+            background: var(--gold);
+        }
+
+        .testimonials-nav button:hover svg {
+            fill: var(--white);
+        }
+
+        .testimonials-nav svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--gold);
+            transition: fill 0.3s ease;
+        }
+
+        /* ========================================
+           CTA Section
+           ======================================== */
+        .cta-section {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80') center/cover no-repeat;
+            opacity: 0.15;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: var(--white);
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .cta-content h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .cta-content h2 .english {
+            display: block;
+            font-family: var(--font-english);
+            font-style: italic;
+            font-size: 0.4em;
+            color: var(--gold);
+            margin-top: 15px;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========================================
+           Contact / Footer Section
+           ======================================== */
+        .footer-section {
+            background: var(--bg-cream);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+        }
+
+        .footer-info {
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .footer-logo {
+            margin-bottom: 30px;
+        }
+
+        .footer-logo .logo-hebrew {
+            font-size: 2rem;
+        }
+
+        .footer-info p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .footer-contact-item svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--gold);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .footer-social a {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .footer-social a:hover svg {
+            fill: var(--white);
+        }
+
+        .footer-social svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--gold);
+            transition: fill 0.3s ease;
+        }
+
+        /* Contact Form */
+        .contact-form-container {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .contact-form-container {
+                padding: 35px 25px;
+            }
+        }
+
+        .contact-form-container h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .contact-form-container > p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            font-family: var(--font-hebrew);
+            font-size: 1rem;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-submit {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Footer Bottom */
+        .footer-bottom {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom .heart {
+            color: var(--dusty-rose);
+        }
+
+        /* ========================================
+           Mobile Menu Overlay
+           ======================================== */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(253, 251, 247, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--gold);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 2rem;
+            color: var(--text-dark);
+        }
+
+        /* ========================================
+           Animations & Effects
+           ======================================== */
+        .blur-in {
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        .parallax-container {
+            overflow: hidden;
+        }
+
+        /* Gradient Blobs */
+        .gradient-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--dusty-rose-light);
+            top: 20%;
+            right: -10%;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--gold-light);
+            bottom: 10%;
+            left: -5%;
+            opacity: 0.3;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-cream);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-logo {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: var(--gold);
+            animation: loading 1.5s ease-in-out;
+        }
+
+        @keyframes loading {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        /* Cursor Effect */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        @media (hover: hover) {
+            .cursor-glow {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">היא אמרה כן</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="container">
+            <div class="nav-inner">
+                <div class="logo">
+                    <span class="logo-hebrew">היא אמרה כן</span>
+                    <span class="logo-english">She Said Yes</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#experience">החוויה</a></li>
+                    <li><a href="#locations">לוקיישנים</a></li>
+                    <li><a href="#gallery">סיפורים אמיתיים</a></li>
+                    <li><a href="#contact">צור קשר</a></li>
+                </ul>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="תפריט">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+        <a href="#experience">החוויה</a>
+        <a href="#locations">לוקיישנים</a>
+        <a href="#gallery">סיפורים אמיתיים</a>
+        <a href="#contact">צור קשר</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <img
+                src="https://images.unsplash.com/photo-1529636798458-92182e662485?w=1920&q=80"
+                alt="זוג בשקיעה"
+                class="hero-bg-image"
+            >
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <span class="hero-badge">✨ הפקות פרימיום</span>
+            <h1 class="hero-title">
+                הרגע שתזכרו<br>
+                <span class="highlight">לכל החיים</span>
+            </h1>
+            <p class="hero-subtitle">
+                הפקות הצעת נישואין בהתאמה אישית — כי הרגע הזה ראוי להיות מושלם
+            </p>
+            <div class="hero-cta">
+                <a href="#contact" class="btn btn-primary">
+                    בוא נתכנן את הרגע שלך
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(180 12 12)"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>גלול למטה</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Intro Section -->
+    <section class="intro-section section-padding" id="about">
+        <div class="container">
+            <div class="intro-content">
+                <div class="intro-text">
+                    <h2>
+                        הופכים רגעים לנצח
+                        <span class="english">Creating Forever Moments</span>
+                    </h2>
+                    <p>
+                        אנחנו מאמינים שהצעת הנישואין היא אחד הרגעים המשמעותיים ביותר בחייכם.
+                        לכן, אנחנו עוסקים ביצירת חוויות בלתי נשכחות — מותאמות אישית,
+                        מרגשות ומושלמות עד לפרט האחרון.
+                    </p>
+                    <p>
+                        מהרעיון הראשוני ועד לרגע שהיא תגיד "כן", אנחנו לצידכם בכל שלב.
+                        הצוות שלנו מתמחה ביצירת אווירה קסומה, סגנון ייחודי וחוויה שתספרו עליה לדורות.
+                    </p>
+                    <div class="intro-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">הצעות מוצלחות</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">אמרו כן</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">שנות ניסיון</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="intro-image">
+                    <img
+                        src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800&q=80"
+                        alt="הצעת נישואין רומנטית"
+                    >
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience / Steps Section -->
+    <section class="experience-section section-padding" id="experience">
+        <div class="container">
+            <div class="section-header">
+                <span class="english-title">The Experience</span>
+                <h2 class="section-title">איך זה עובד?</h2>
+                <p class="section-subtitle" style="margin: 0 auto;">
+                    תהליך פשוט ומרגש שמוביל לרגע המושלם
+                </p>
+            </div>
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">פגישת ייעוץ</h3>
+                    <p class="step-desc">
+                        נפגש לשיחה אישית, נכיר את סיפור האהבה שלכם ונבין מה הרגע המושלם עבורכם.
+                    </p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">עיצוב הקונספט</h3>
+                    <p class="step-desc">
+                        נבנה יחד את החזון — מהלוקיישן ועד לכל פרט קטן, כולל עיצוב, מוזיקה ותפאורה.
+                    </p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </div>
+                    <h3 class="step-title">היום הגדול</h3>
+                    <p class="step-desc">
+                        אנחנו מטפלים בכל הפרטים מאחורי הקלעים, ואתם? פשוט נהנים מהרגע הכי מרגש בחייכם.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section class="locations-section section-padding" id="locations">
+        <div class="container">
+            <div class="section-header">
+                <span class="english-title">Locations</span>
+                <h2 class="section-title">לוקיישנים קסומים</h2>
+                <p class="section-subtitle" style="margin: 0 auto;">
+                    בחרו את הרקע המושלם לרגע שלכם
+                </p>
+            </div>
+            <div class="locations-grid">
+                <div class="location-card">
+                    <div class="location-card-inner">
+                        <img
+                            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
+                            alt="הצעה בשקיעה"
+                            class="location-image"
+                        >
+                        <div class="location-overlay"></div>
+                        <div class="location-content">
+                            <span class="location-tag">הכי פופולרי</span>
+                            <h3 class="location-title">הצעות בשקיעה</h3>
+                            <p class="location-desc">
+                                רגע קסום על רקע שמיים צבועים בזהב וכתום — רומנטיקה טהורה.
+                            </p>
+                        </div>
+                        <div class="location-arrow">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-card">
+                    <div class="location-card-inner">
+                        <img
+                            src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=800&q=80"
+                            alt="פיקניק בטבע"
+                            class="location-image"
+                        >
+                        <div class="location-overlay"></div>
+                        <div class="location-content">
+                            <span class="location-tag">אינטימי</span>
+                            <h3 class="location-title">פיקניק בטבע</h3>
+                            <p class="location-desc">
+                                סטאפ מעוצב בלב הטבע, עם שמפניה, פרחים ואווירה אינטימית.
+                            </p>
+                        </div>
+                        <div class="location-arrow">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-card">
+                    <div class="location-card-inner">
+                        <img
+                            src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=800&q=80"
+                            alt="רומנטיקה אורבנית"
+                            class="location-image"
+                        >
+                        <div class="location-overlay"></div>
+                        <div class="location-content">
+                            <span class="location-tag">מודרני</span>
+                            <h3 class="location-title">רומנטיקה אורבנית</h3>
+                            <p class="location-desc">
+                                גג בעיר עם נוף עוצר נשימה, אורות עיר ואווירה סופיסטיקטית.
+                            </p>
+                        </div>
+                        <div class="location-arrow">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <div class="container">
+            <div class="gallery-header">
+                <span class="english-title" style="font-family: var(--font-english); font-style: italic; font-size: 1rem; color: var(--gold); letter-spacing: 3px; display: block; margin-bottom: 15px;">Real Stories</span>
+                <h2 class="section-title">סיפורי אהבה אמיתיים</h2>
+                <p class="section-subtitle" style="margin: 0 auto;">
+                    רגעים שתפסנו, זיכרונות שיישארו לנצח
+                </p>
+            </div>
+        </div>
+        <div class="gallery-strip" id="galleryStrip">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" alt="יעל ואורי">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-couple-name">Yael & Ori</div>
+                    <div class="gallery-location">חוף תל אביב</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=600&q=80" alt="מיכל ודניאל">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-couple-name">Michal & Daniel</div>
+                    <div class="gallery-location">הרי ירושלים</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80" alt="נועה ואדם">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-couple-name">Noa & Adam</div>
+                    <div class="gallery-location">כרם זיתים</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80" alt="שירה וניר">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-couple-name">Shira & Nir</div>
+                    <div class="gallery-location">גג בנמל יפו</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&q=80" alt="ליאור ותמר">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-couple-name">Lior & Tamar</div>
+                    <div class="gallery-location">שמורת טבע</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1522748906645-95d8adfd52c7?w=600&q=80" alt="עמית ומאיה">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-couple-name">Amit & Maya</div>
+                    <div class="gallery-location">חצר בית אבן</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section section-padding" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="english-title" style="font-family: var(--font-english); font-style: italic; font-size: 1rem; color: var(--gold); letter-spacing: 3px; display: block; margin-bottom: 15px;">Testimonials</span>
+                <h2 class="section-title">מה הזוגות שלנו אומרים</h2>
+            </div>
+            <div class="testimonials-container">
+                <div class="testimonial-card" id="testimonialCard">
+                    <p class="testimonial-quote">
+                        "היא <strong>בכתה מרוב התרגשות</strong> כבר ברגע שהגענו למקום.
+                        כל פרט היה מושלם — האורות, המוזיקה, הפרחים.
+                        זה היה הרבה מעבר למה שדמיינתי. הצוות של 'היא אמרה כן' הפך את החלום שלי למציאות."
+                    </p>
+                    <div class="testimonial-author">
+                        <img
+                            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80"
+                            alt="דניאל"
+                            class="testimonial-avatar"
+                        >
+                        <div class="testimonial-info">
+                            <h4>דניאל כ.</h4>
+                            <span>הצעה בשקיעה, חיפה</span>
+                            <div class="testimonial-rating">★★★★★</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonials-nav">
+                    <button aria-label="הקודם" id="prevTestimonial">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                    </button>
+                    <button aria-label="הבא" id="nextTestimonial">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section section-padding">
+        <div class="container">
+            <div class="cta-content">
+                <h2>
+                    מוכן ליצור את הרגע?
+                    <span class="english">Let's Create Magic Together</span>
+                </h2>
+                <p>
+                    הצטרפו למאות הזוגות שכבר חוו את הרגע המושלם איתנו
+                </p>
+                <a href="#contact" class="btn btn-primary">
+                    התחילו את המסע
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(180 12 12)"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact Section -->
+    <footer class="footer-section section-padding" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <div class="logo">
+                            <span class="logo-hebrew">היא אמרה כן</span>
+                            <span class="logo-english">She Said Yes</span>
+                        </div>
+                    </div>
+                    <p>
+                        הפקות הצעות נישואין ברמה הגבוהה ביותר.
+                        אנחנו כאן כדי להפוך את הרגע הכי חשוב בחייכם לבלתי נשכח.
+                    </p>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                        </svg>
+                        <span>054-123-4567</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                        <span>hello@shesaidyes.co.il</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                        <span>תל אביב-יפו</span>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-form-container">
+                    <h3>בואו נדבר</h3>
+                    <p>השאירו פרטים ונחזור אליכם תוך 24 שעות</p>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">שם מלא</label>
+                                <input type="text" id="name" name="name" placeholder="השם שלך" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">טלפון</label>
+                                <input type="tel" id="phone" name="phone" placeholder="050-000-0000" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">אימייל</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">תאריך משוער</label>
+                            <input type="date" id="date" name="date">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">סגנון מועדף</label>
+                            <select id="location" name="location">
+                                <option value="">בחרו סגנון...</option>
+                                <option value="sunset">הצעה בשקיעה</option>
+                                <option value="nature">פיקניק בטבע</option>
+                                <option value="urban">רומנטיקה אורבנית</option>
+                                <option value="custom">משהו אחר</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">ספרו לנו על סיפור האהבה שלכם</label>
+                            <textarea id="message" name="message" placeholder="נשמח לשמוע..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary form-submit">
+                            שליחה
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>
+                    © 2024 היא אמרה כן | כל הזכויות שמורות | נבנה עם <span class="heart">❤</span> לאהבה
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ========================================
+        // Initialize GSAP and ScrollTrigger
+        // ========================================
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ========================================
+        // Loading Screen
+        // ========================================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                initAnimations();
+            }, 1500);
+        });
+
+        // ========================================
+        // Floating Particles
+        // ========================================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = i % 3 === 0 ? 'particle petal' : 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // ========================================
+        // Cursor Glow Effect
+        // ========================================
+        const cursorGlow = document.getElementById('cursorGlow');
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorGlow.style.left = mouseX + 'px';
+            cursorGlow.style.top = mouseY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // ========================================
+        // Navigation Scroll Effect
+        // ========================================
+        const nav = document.getElementById('nav');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // ========================================
+        // Mobile Menu
+        // ========================================
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // ========================================
+        // GSAP Animations
+        // ========================================
+        function initAnimations() {
+            // Hero Animations
+            const heroTimeline = gsap.timeline();
+
+            heroTimeline
+                .to('.hero-badge', {
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    duration: 1,
+                    ease: 'power2.out'
+                })
+                .to('.hero-title', {
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    duration: 1.2,
+                    ease: 'power2.out'
+                }, '-=0.5')
+                .to('.hero-subtitle', {
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    duration: 1,
+                    ease: 'power2.out'
+                }, '-=0.7')
+                .to('.hero-cta', {
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    duration: 1,
+                    ease: 'power2.out'
+                }, '-=0.5');
+
+            // Intro Section
+            gsap.to('.intro-text', {
+                scrollTrigger: {
+                    trigger: '.intro-section',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1.2,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.intro-image', {
+                scrollTrigger: {
+                    trigger: '.intro-section',
+                    start: 'top 60%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1.2,
+                delay: 0.3,
+                ease: 'power2.out'
+            });
+
+            // Parallax effect on intro image
+            gsap.to('.intro-image img', {
+                scrollTrigger: {
+                    trigger: '.intro-section',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1
+                },
+                y: -50,
+                ease: 'none'
+            });
+
+            // Experience Section
+            gsap.to('.experience-section .section-header', {
+                scrollTrigger: {
+                    trigger: '.experience-section',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.step-card', {
+                scrollTrigger: {
+                    trigger: '.steps-container',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                y: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: 'power2.out'
+            });
+
+            // Locations Section
+            gsap.to('.locations-section .section-header', {
+                scrollTrigger: {
+                    trigger: '.locations-section',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.location-card', {
+                scrollTrigger: {
+                    trigger: '.locations-grid',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                stagger: 0.15,
+                ease: 'power2.out'
+            });
+
+            // Parallax on location images
+            document.querySelectorAll('.location-card').forEach(card => {
+                gsap.to(card.querySelector('.location-image'), {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1
+                    },
+                    y: -30,
+                    ease: 'none'
+                });
+            });
+
+            // Gallery Section
+            gsap.to('.gallery-header', {
+                scrollTrigger: {
+                    trigger: '.gallery-section',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.gallery-item', {
+                scrollTrigger: {
+                    trigger: '.gallery-strip',
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                stagger: 0.1,
+                ease: 'power2.out'
+            });
+
+            // Testimonials Section
+            gsap.to('.testimonials-section .section-header', {
+                scrollTrigger: {
+                    trigger: '.testimonials-section',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.testimonial-card', {
+                scrollTrigger: {
+                    trigger: '.testimonials-container',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1.2,
+                ease: 'power2.out'
+            });
+
+            // CTA Section
+            gsap.to('.cta-content', {
+                scrollTrigger: {
+                    trigger: '.cta-section',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1.2,
+                ease: 'power2.out'
+            });
+
+            // Footer Section
+            gsap.to('.footer-info', {
+                scrollTrigger: {
+                    trigger: '.footer-section',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.contact-form-container', {
+                scrollTrigger: {
+                    trigger: '.footer-section',
+                    start: 'top 60%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                delay: 0.2,
+                ease: 'power2.out'
+            });
+        }
+
+        // ========================================
+        // Gallery Drag Scroll
+        // ========================================
+        const galleryStrip = document.getElementById('galleryStrip');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        galleryStrip.addEventListener('mousedown', (e) => {
+            isDown = true;
+            galleryStrip.classList.add('dragging');
+            startX = e.pageX - galleryStrip.offsetLeft;
+            scrollLeft = galleryStrip.scrollLeft;
+        });
+
+        galleryStrip.addEventListener('mouseleave', () => {
+            isDown = false;
+            galleryStrip.classList.remove('dragging');
+        });
+
+        galleryStrip.addEventListener('mouseup', () => {
+            isDown = false;
+            galleryStrip.classList.remove('dragging');
+        });
+
+        galleryStrip.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - galleryStrip.offsetLeft;
+            const walk = (x - startX) * 2;
+            galleryStrip.scrollLeft = scrollLeft - walk;
+        });
+
+        // ========================================
+        // Testimonials Slider
+        // ========================================
+        const testimonials = [
+            {
+                quote: 'היא <strong>בכתה מרוב התרגשות</strong> כבר ברגע שהגענו למקום. כל פרט היה מושלם — האורות, המוזיקה, הפרחים. זה היה הרבה מעבר למה שדמיינתי. הצוות של \'היא אמרה כן\' הפך את החלום שלי למציאות.',
+                name: 'דניאל כ.',
+                location: 'הצעה בשקיעה, חיפה',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80'
+            },
+            {
+                quote: 'לא האמנתי שאפשר להפוך רגע פשוט למשהו כל כך <strong>קסום ובלתי נשכח</strong>. התכנון המדוקדק, ההתאמה האישית והתשומת לב לכל פרט — פשוט מושלם.',
+                name: 'אורי מ.',
+                location: 'פיקניק בטבע, עמק יזרעאל',
+                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80'
+            },
+            {
+                quote: 'מהפגישה הראשונה הבנתי שאני בידיים טובות. הם הקשיבו, הבינו בדיוק מה אני רוצה, והעבירו את זה <strong>לרמה אחרת לגמרי</strong>. תודה מכל הלב!',
+                name: 'יונתן ש.',
+                location: 'גג בתל אביב',
+                avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&q=80'
+            }
+        ];
+
+        let currentTestimonial = 0;
+        const testimonialCard = document.getElementById('testimonialCard');
+
+        function updateTestimonial(index) {
+            const t = testimonials[index];
+
+            gsap.to(testimonialCard, {
+                opacity: 0,
+                filter: 'blur(10px)',
+                duration: 0.3,
+                onComplete: () => {
+                    testimonialCard.querySelector('.testimonial-quote').innerHTML = '"' + t.quote + '"';
+                    testimonialCard.querySelector('.testimonial-info h4').textContent = t.name;
+                    testimonialCard.querySelector('.testimonial-info span').textContent = t.location;
+                    testimonialCard.querySelector('.testimonial-avatar').src = t.avatar;
+
+                    gsap.to(testimonialCard, {
+                        opacity: 1,
+                        filter: 'blur(0px)',
+                        duration: 0.5
+                    });
+                }
+            });
+        }
+
+        document.getElementById('nextTestimonial').addEventListener('click', () => {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            updateTestimonial(currentTestimonial);
+        });
+
+        document.getElementById('prevTestimonial').addEventListener('click', () => {
+            currentTestimonial = (currentTestimonial - 1 + testimonials.length) % testimonials.length;
+            updateTestimonial(currentTestimonial);
+        });
+
+        // ========================================
+        // Form Submission
+        // ========================================
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = 'שולח...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerHTML = '✓ נשלח בהצלחה!';
+                btn.style.background = 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)';
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.style.background = '';
+                    e.target.reset();
+                }, 3000);
+            }, 1500);
+        });
+
+        // ========================================
+        // Smooth Scroll for Anchor Links
+        // ========================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
